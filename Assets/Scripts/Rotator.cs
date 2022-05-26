@@ -3,21 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System;
 
 public class Rotator : MonoBehaviour
 {
     [SerializeField] float _speed = 150f;
-    [SerializeField] Text _scoreText;
-    int _score=4,_level=4;
+    [SerializeField] Text _scoreText,_levelText;
+    int _score,_level;
     private void Awake()
     {
+        _score = Convert.ToInt32(_scoreText.text);
         _scoreText.text = _score.ToString();
     }
     private void FixedUpdate()
     {
         
         transform.Rotate(0f, 0f, _speed * Time.deltaTime);
-        LevelSystem();
+        //LevelSystem();
         _scoreText.text = _score.ToString();
     }
     private void OnTriggerEnter2D(Collider2D collision)
@@ -28,21 +30,22 @@ public class Rotator : MonoBehaviour
             _score--;
 
         }
-    }
-
-    private void Update()
-    {
-        
-    }
-    void LevelSystem()
-    {
-        if (_score==0)
+        if (_score == 0)
         {
-            _level += 1;
+            _level = Convert.ToInt32(_levelText.text);
+            //_level += 1;
             _score = _level;
+            SceneManager.LoadScene(_level);
             //Destroy(GameObject.FindGameObjectWithTag("Pin"));
             //Destroy(GetComponentInChildren<GameObject>());
         }
+    }
+
+
+    void LevelSystem()
+    {
+        
+        
         
     }
 }
